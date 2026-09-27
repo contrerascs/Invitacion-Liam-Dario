@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liam Dario · 1 año</title>
+<meta name="description" content="Invitación al primer cumpleaños y bautizo de Liam Dario">
+<meta property="og:title" content="¡Liam Dario cumple 1 año!">
+<meta property="og:description" content="Te invitamos a su primer cumpleaños y bautizo 🤠">
+<meta property="og:image" content="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky-top: #1f74d4;
+    --sky-mid: #3f9bea;
+    --sky-low: #8fcaf7;
+    --yellow: #ffd21f;
+    --yellow-deep: #f2b705;
+    --red: #e3262b;
+    --blue: #1a3fa6;
+    --brown: #8a4b22;
+    --cream: #fff8e6;
+    --ink: #1c2340;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Nunito', system-ui, sans-serif;
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-low) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---------- Nubes estilo Toy Story ---------- */
+  .sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .cloud {
+    position: absolute;
+    width: var(--w);
+    height: calc(var(--w) * .38);
+    background: #fff;
+    border-radius: 999px;
+    box-shadow: inset 0 -10px 0 rgba(170, 205, 240, .45);
+    animation: drift var(--t) linear infinite;
+    animation-delay: var(--d);
+    left: -30vw;
+    opacity: .97;
+  }
+  .cloud::before, .cloud::after {
+    content: ""; position: absolute; background: #fff; border-radius: 50%;
+  }
+  .cloud::before { width: 52%; height: 135%; left: 12%; bottom: 22%; }
+  .cloud::after  { width: 40%; height: 105%; right: 12%; bottom: 30%; }
+  .cloud span {
+    position: absolute; background: #fff; border-radius: 50%;
+    width: 30%; height: 80%; left: 44%; bottom: 55%;
+  }
+  @keyframes drift {
+    from { transform: translateX(0); }
+    to   { transform: translateX(160vw); }
+  }
+
+  /* ---------- Pantalla de bienvenida ---------- */
+  #intro {
+    position: fixed; inset: 0; z-index: 50;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 22px; padding: 24px; text-align: center;
+    background: radial-gradient(circle at 50% 40%, rgba(255,255,255,.25), transparent 60%),
+                linear-gradient(180deg, var(--sky-top), var(--sky-mid));
+    transition: opacity .8s ease, visibility .8s;
+  }
+  #intro.hide { opacity: 0; visibility: hidden; }
+  #intro img { width: min(340px, 78vw); filter: drop-shadow(0 8px 0 rgba(0,0,0,.18)); animation: bob 2.6s ease-in-out infinite; }
+  #intro p { color: #fff; font-weight: 800; font-size: 1.15rem; text-shadow: 0 2px 0 rgba(0,0,0,.2); }
+  @keyframes bob { 0%,100% { transform: translateY(0) rotate(-2deg);} 50% { transform: translateY(-10px) rotate(2deg);} }
+
+  .btn-star {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: clamp(1.3rem, 5vw, 1.7rem);
+    letter-spacing: 1px;
+    color: var(--blue);
+    background: var(--yellow);
+    border: 5px solid var(--blue);
+    border-radius: 18px;
+    padding: 14px 30px 10px;
+    cursor: pointer;
+    box-shadow: 0 7px 0 var(--blue), 0 12px 24px rgba(0,0,0,.25);
+    transition: transform .12s, box-shadow .12s;
+  }
+  .btn-star:hover { transform: translateY(-2px); }
+  .btn-star:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--blue), 0 6px 12px rgba(0,0,0,.2); }
+
+  /* ---------- Contenido ---------- */
+  main { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 32px 16px 80px; }
+
+  .hero { text-align: center; padding: 30px 0 10px; }
+  .hero .logo { width: min(460px, 88vw); filter: drop-shadow(0 10px 0 rgba(0,0,0,.15)); animation: pop 1s cubic-bezier(.2,1.6,.4,1) both; }
+  @keyframes pop { from { transform: scale(.3) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+
+  .tagline {
+    font-family: 'Luckiest Guy', cursive;
+    color: #fff;
+    font-size: clamp(1.5rem, 6vw, 2.3rem);
+    line-height: 1.15;
+    margin-top: 18px;
+    text-shadow: 3px 3px 0 var(--blue), -2px -2px 0 var(--blue), 2px -2px 0 var(--blue), -2px 2px 0 var(--blue);
+  }
+  .tagline .y { color: var(--yellow); }
+
+  .card {
+    background: var(--cream);
+    border: 5px solid var(--blue);
+    border-radius: 26px;
+    padding: 28px 22px;
+    margin-top: 34px;
+    box-shadow: 0 10px 0 rgba(26,63,166,.9), 0 20px 40px rgba(0,0,0,.18);
+    position: relative;
+    text-align: center;
+  }
+  .plaid {
+    height: 18px; border-radius: 10px 10px 0 0;
+    margin: -28px -22px 22px;
+    background-color: var(--yellow);
+    background-image:
+      linear-gradient(90deg, transparent 0 46%, var(--red) 46% 54%, transparent 54%),
+      linear-gradient(0deg, transparent 0 40%, var(--red) 40% 60%, transparent 60%);
+    background-size: 26px 26px, 26px 18px;
+    border-bottom: 4px solid var(--blue);
+    border-radius: 20px 20px 0 0;
+  }
+  .cow {
+    height: 18px;
+    margin: -28px -22px 22px;
+    border-radius: 20px 20px 0 0;
+    border-bottom: 4px solid var(--blue);
+    background:
+      radial-gradient(ellipse 14px 7px at 20px 8px, #111 98%, transparent),
+      radial-gradient(ellipse 9px 6px at 58px 12px, #111 98%, transparent),
+      radial-gradient(ellipse 12px 5px at 92px 6px, #111 98%, transparent),
+      #fff;
+    background-size: 120px 18px;
+  }
+
+  h2 {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: clamp(1.7rem, 6vw, 2.3rem);
+    color: var(--red);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    text-shadow: 2px 2px 0 var(--yellow);
+  }
+  .card p { font-size: 1.08rem; font-weight: 600; line-height: 1.55; margin-top: 10px; }
+  .big { font-weight: 900; font-size: 1.25rem; color: var(--blue); }
+
+  .intro-text { font-size: 1.15rem; }
+  .intro-text strong { color: var(--blue); }
+
+  /* Fotos tipo polaroid */
+  .photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 34px; }
+  .polaroid {
+    background: #fff; padding: 10px 10px 40px; border-radius: 6px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    position: relative;
+    transition: transform .3s;
+  }
+  .polaroid:nth-child(odd) { transform: rotate(-3deg); }
+  .polaroid:nth-child(even) { transform: rotate(3deg); }
+  .polaroid:hover { transform: rotate(0) scale(1.03); z-index: 2; }
+  .polaroid img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center 35%; border-radius: 3px; display: block; }
+  .polaroid figcaption {
+    position: absolute; bottom: 8px; left: 0; right: 0; text-align: center;
+    font-family: 'Luckiest Guy', cursive; color: var(--brown); font-size: 1.05rem; letter-spacing: .5px;
+  }
+  .polaroid.wide { grid-column: span 2; max-width: 360px; justify-self: center; width: 100%; }
+
+  /* Cuenta regresiva */
+  .countdown { display: flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .unit {
+    background: var(--yellow); border: 4px solid var(--blue); border-radius: 16px;
+    min-width: 76px; padding: 10px 6px 6px;
+    box-shadow: 0 5px 0 var(--blue);
+  }
+  .unit b { display: block; font-family: 'Luckiest Guy', cursive; font-size: 2.1rem; color: var(--red); line-height: 1; }
+  .unit small { font-weight: 800; color: var(--blue); text-transform: uppercase; font-size: .72rem; letter-spacing: 1px; }
+
+  /* Eventos */
+  .icon { font-size: 2.6rem; line-height: 1; margin-bottom: 6px; }
+  .btn {
+    display: inline-block; margin-top: 16px;
+    background: var(--red); color: #fff; text-decoration: none;
+    font-weight: 900; padding: 11px 20px; border-radius: 999px;
+    border: 3px solid var(--blue); box-shadow: 0 4px 0 var(--blue);
+    transition: transform .12s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.green { background: #25a244; }
+
+  .quote {
+    font-family: 'Luckiest Guy', cursive; color: #fff; text-align: center;
+    font-size: clamp(1.4rem, 5.5vw, 2rem); margin-top: 44px; line-height: 1.2;
+    text-shadow: 3px 3px 0 var(--blue);
+  }
+
+  footer { text-align: center; color: #fff; font-weight: 800; margin-top: 30px; text-shadow: 0 2px 0 rgba(0,0,0,.2); }
+
+  /* Botón de música */
+  #music {
+    position: fixed; right: 16px; bottom: 16px; z-index: 40;
+    width: 58px; height: 58px; border-radius: 50%;
+    background: var(--yellow); border: 4px solid var(--blue);
+    box-shadow: 0 5px 0 var(--blue); font-size: 1.6rem; cursor: pointer;
+    display: grid; place-items: center;
+  }
+  #music.playing { animation: spin 3s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  .polaroid.reveal.in:nth-child(odd) { transform: rotate(-3deg); }
+  .polaroid.reveal.in:nth-child(even) { transform: rotate(3deg); }
+
+  @media (max-width: 620px) {
+    .photos { gap: 14px; }
+    .polaroid { padding: 7px 7px 32px; }
+    .polaroid figcaption { font-size: .9rem; }
+    .unit { min-width: 64px; }
+    .unit b { font-size: 1.7rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cloud, #intro img, #music.playing { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sky" id="sky"></div>
+
+<!-- Pantalla de bienvenida: los navegadores solo permiten reproducir audio después de un toque -->
+<div id="intro">
+  <img src="assets/logo.png" alt="Liam Dario 1">
+  <p>¡Tienes una invitación especial, vaquero! 🤠</p>
+  <button class="btn-star" id="enter">⭐ Abrir invitación</button>
+</div>
+
+<button id="music" aria-label="Pausar o reproducir música" title="Música">🎵</button>
+<audio id="song" src="assets/rodeo-woody.mp3" loop preload="auto"></audio>
+
+<main>
+  <section class="hero">
+    <img class="logo" src="assets/logo.png" alt="Liam Dario 1">
+    <div class="tagline">¡Hay un nuevo <span class="y">sheriff</span><br>en el pueblo!</div>
+  </section>
+
+  <section class="card reveal">
+    <div class="plaid"></div>
+    <h2>¡Estás invitado!</h2>
+    <p class="intro-text">Con mucho amor te invitamos a celebrar el <strong>bautizo</strong> y el <strong>primer cumpleaños</strong> de nuestro pequeño vaquero</p>
+    <p class="big" style="font-family:'Luckiest Guy',cursive;font-size:2rem;color:var(--blue);margin-top:14px;">Liam Dario</p>
+    <p id="fecha-texto" class="big"></p>
+  </section>
+
+  <section class="photos">
+    <figure class="polaroid reveal"><img src="assets/woody-sonrisa.jpg" alt="Liam vestido de Woody"><figcaption>¡Yiiija!</figcaption></figure>
+    <figure class="polaroid reveal"><img src="assets/woody-sombrero.jpg" alt="Liam con sombrero de Woody"><figcaption>Sheriff Liam</figcaption></figure>
+    <figure class="polaroid reveal"><img src="assets/bautizo-sentado.jpg" alt="Liam con su ropa de bautizo"><figcaption>Mi bautizo</figcaption></figure>
+    <figure class="polaroid reveal"><img src="assets/woody-mirando.jpg" alt="Liam sosteniendo el sombrero de Woody"><figcaption>¡Al infinito!</figcaption></figure>
+  </section>
+
+  <section class="card reveal">
+    <div class="cow"></div>
+    <h2>Cuenta regresiva</h2>
+    <div class="countdown" id="countdown">
+      <div class="unit"><b id="d">0</b><small>Días</small></div>
+      <div class="unit"><b id="h">0</b><small>Horas</small></div>
+      <div class="unit"><b id="m">0</b><small>Min</small></div>
+      <div class="unit"><b id="s">0</b><small>Seg</small></div>
+    </div>
+  </section>
+
+  <section class="card reveal">
+    <div class="plaid"></div>
+    <div class="icon">🎂</div>
+    <h2>¿Cuándo y dónde?</h2>
+    <p class="big" id="fiesta-fecha"></p>
+    <p class="big" id="fiesta-hora"></p>
+    <p id="fiesta-lugar"></p>
+    <a class="btn" id="fiesta-mapa" target="_blank" rel="noopener">📍 Ver ubicación</a>
+  </section>
+
+  <section class="card reveal">
+    <div class="cow"></div>
+    <h2>Confirma tu asistencia</h2>
+    <p>Nos encantará que nos acompañes en este día tan especial. Por favor confírmanos antes del <b id="confirmar-antes"></b>.</p>
+    <a class="btn green" id="whatsapp" target="_blank" rel="noopener">💬 Confirmar por WhatsApp</a>
+  </section>
+
+  <p class="quote reveal">"Yo soy tu amigo fiel" 🤠⭐</p>
+  <footer>Con cariño, la familia de Liam Dario</footer>
+</main>
+
+<script>
+  /* ================================================================
+     ✏️  EDITA AQUÍ LOS DATOS DEL EVENTO
+     ================================================================ */
+  const EVENTO = {
+    fecha: '2026-10-10T15:00:00',               // Fecha y hora de inicio (AAAA-MM-DDTHH:MM:SS)
+    fechaTexto: 'Sábado 10 de octubre de 2026',
+    fiestaHora: '3:00 p.m.',
+    fiestaLugar: 'Salón del Dany',
+    fiestaMapa: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Salón del Dany'), // Cambia por el link real de Google Maps
+    confirmarAntes: '5 de octubre',
+    whatsapp: '520000000000',                    // Número con lada de país, sin "+" ni espacios
+  };
+  /* ================================================================ */
+
+  const $ = id => document.getElementById(id);
+  $('fecha-texto').textContent = EVENTO.fechaTexto;
+  $('fiesta-fecha').textContent = EVENTO.fechaTexto;
+  $('fiesta-hora').textContent = EVENTO.fiestaHora;
+  $('fiesta-lugar').innerHTML = EVENTO.fiestaLugar;
+  $('fiesta-mapa').href = EVENTO.fiestaMapa;
+  $('confirmar-antes').textContent = EVENTO.confirmarAntes;
+  $('whatsapp').href = 'https://wa.me/' + EVENTO.whatsapp + '?text=' +
+    encodeURIComponent('¡Hola! Confirmo mi asistencia al bautizo y primer cumpleaños de Liam Dario 🤠🎉');
+
+  // Nubes
+  const sky = $('sky');
+  const clouds = [
+    { top: 6,  w: 260, t: 70, d: -10 }, { top: 20, w: 170, t: 55, d: -40 },
+    { top: 34, w: 320, t: 90, d: -60 }, { top: 50, w: 200, t: 65, d: -20 },
+    { top: 64, w: 280, t: 80, d: -75 }, { top: 78, w: 180, t: 60, d: -5 },
+    { top: 88, w: 240, t: 75, d: -50 }, { top: 12, w: 140, t: 50, d: -30 },
+  ];
+  clouds.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'cloud';
+    el.style.cssText = `top:${c.top}vh;--w:${c.w}px;--t:${c.t}s;--d:${c.d}s`;
+    el.appendChild(document.createElement('span'));
+    sky.appendChild(el);
+  });
+
+  // Música
+  const song = $('song'), musicBtn = $('music');
+  song.volume = 0.7;
+  function setPlaying(on) { musicBtn.classList.toggle('playing', on); musicBtn.textContent = on ? '🎵' : '🔇'; }
+  function play() { return song.play().then(() => setPlaying(true)).catch(() => setPlaying(false)); }
+  musicBtn.addEventListener('click', () => song.paused ? play() : (song.pause(), setPlaying(false)));
+
+  // Intento de reproducción automática (algunos navegadores lo permiten)
+  play().then(() => { if (!song.paused) $('intro').classList.add('hide'); });
+
+  $('enter').addEventListener('click', () => {
+    play();
+    $('intro').classList.add('hide');
+  });
+
+  // Cuenta regresiva
+  const target = new Date(EVENTO.fecha).getTime();
+  function tick() {
+    let diff = Math.max(0, target - Date.now());
+    const d = Math.floor(diff / 864e5); diff -= d * 864e5;
+    const h = Math.floor(diff / 36e5);  diff -= h * 36e5;
+    const m = Math.floor(diff / 6e4);   diff -= m * 6e4;
+    const s = Math.floor(diff / 1e3);
+    $('d').textContent = d; $('h').textContent = h; $('m').textContent = m; $('s').textContent = s;
+  }
+  tick(); setInterval(tick, 1000);
+
+  // Animación al hacer scroll
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
