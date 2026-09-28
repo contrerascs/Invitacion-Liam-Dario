@@ -74,7 +74,6 @@
   }
   #intro.hide { opacity: 0; visibility: hidden; }
   #intro img { width: min(340px, 78vw); filter: drop-shadow(0 8px 0 rgba(0,0,0,.18)); animation: bob 2.6s ease-in-out infinite; }
-  #intro p { color: #fff; font-weight: 800; font-size: 1.15rem; text-shadow: 0 2px 0 rgba(0,0,0,.2); }
   @keyframes bob { 0%,100% { transform: translateY(0) rotate(-2deg);} 50% { transform: translateY(-10px) rotate(2deg);} }
 
   .btn-star {
@@ -96,7 +95,27 @@
   /* ---------- Contenido ---------- */
   main { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 32px 16px 80px; }
 
-  .hero { text-align: center; padding: 30px 0 10px; }
+  .hero {
+    text-align: center;
+    min-height: calc(100svh - 32px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px 0 70px;
+    position: relative;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+    color: #fff; font-family: 'Luckiest Guy', cursive; font-size: 1.15rem; letter-spacing: 1px;
+    text-shadow: 2px 2px 0 var(--blue), -1px -1px 0 var(--blue), 1px -1px 0 var(--blue), -1px 1px 0 var(--blue);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    animation: hint 1.8s ease-in-out infinite;
+  }
+  .scroll-hint span {
+    width: 14px; height: 14px;
+    border-right: 4px solid var(--yellow); border-bottom: 4px solid var(--yellow);
+    transform: rotate(45deg);
+    filter: drop-shadow(1px 1px 0 var(--blue));
+  }
+  @keyframes hint { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 8px); } }
   .hero .logo { width: min(460px, 88vw); filter: drop-shadow(0 10px 0 rgba(0,0,0,.15)); animation: pop 1s cubic-bezier(.2,1.6,.4,1) both; }
   @keyframes pop { from { transform: scale(.3) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
 
@@ -158,23 +177,74 @@
   .intro-text { font-size: 1.15rem; }
   .intro-text strong { color: var(--blue); }
 
-  /* Fotos tipo polaroid */
-  .photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 34px; }
+  /* Fotos tipo polaroid, encimadas */
+  .photos {
+    position: relative;
+    width: 100%; max-width: 560px;
+    aspect-ratio: 1 / 1.25;
+    margin: 50px auto 0;
+  }
   .polaroid {
     background: #fff; padding: 10px 10px 40px; border-radius: 6px;
-    box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    box-shadow: 0 10px 24px rgba(0,0,0,.28);
     position: relative;
-    transition: transform .3s;
   }
-  .polaroid:nth-child(odd) { transform: rotate(-3deg); }
-  .polaroid:nth-child(even) { transform: rotate(3deg); }
-  .polaroid:hover { transform: rotate(0) scale(1.03); z-index: 2; }
   .polaroid img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center 35%; border-radius: 3px; display: block; }
   .polaroid figcaption {
     position: absolute; bottom: 8px; left: 0; right: 0; text-align: center;
     font-family: 'Luckiest Guy', cursive; color: var(--brown); font-size: 1.05rem; letter-spacing: .5px;
   }
-  .polaroid.wide { grid-column: span 2; max-width: 360px; justify-self: center; width: 100%; }
+  .photo {
+    position: absolute; width: 40%;
+    left: var(--x); top: var(--y); z-index: var(--z);
+    transform: rotate(var(--r));
+    cursor: zoom-in;
+    transition: transform .6s cubic-bezier(.2,1.4,.4,1), opacity .5s ease, box-shadow .2s;
+    transition-delay: calc(var(--i) * .12s);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .photo.main { width: 58%; }
+  .photos:not(.in) .photo { opacity: 0; transform: translateY(60px) scale(.7) rotate(0deg); }
+  .photos.in .photo:hover { transform: rotate(var(--r)) scale(1.04); transition-delay: 0s; }
+  .photo:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
+  .tap-hint {
+    display: table; margin: 22px auto 0;
+    background: var(--blue); color: #fff; font-weight: 800;
+    padding: 8px 18px; border-radius: 999px;
+    box-shadow: 0 4px 0 rgba(0,0,0,.18);
+  }
+
+  /* Visor de foto en tamaño completo */
+  #lightbox {
+    position: fixed; inset: 0; z-index: 60;
+    background: rgba(10, 25, 60, .88);
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s;
+  }
+  #lightbox.open { opacity: 1; visibility: visible; }
+  #lightbox .polaroid {
+    transform: scale(.85) rotate(-2deg); transition: transform .35s cubic-bezier(.2,1.4,.4,1);
+    padding: 12px 12px 54px;
+    max-width: 100%;
+  }
+  #lightbox.open .polaroid { transform: scale(1) rotate(-1deg); }
+  #lightbox .polaroid img {
+    width: auto; height: auto; aspect-ratio: auto; object-fit: contain;
+    max-width: calc(100vw - 56px); max-height: calc(100svh - 150px);
+  }
+  #lightbox figcaption { font-size: 1.5rem; bottom: 12px; }
+  .lb-btn {
+    position: absolute; z-index: 2;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--yellow); border: 4px solid var(--blue); color: var(--blue);
+    font: 1.6rem/1 'Luckiest Guy', cursive; cursor: pointer;
+    box-shadow: 0 4px 0 var(--blue);
+    display: grid; place-items: center;
+  }
+  .lb-close { top: 16px; right: 16px; }
+  .lb-prev { left: 12px; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 12px; top: 50%; transform: translateY(-50%); }
 
   /* Cuenta regresiva */
   .countdown { display: flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
@@ -219,18 +289,21 @@
 
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: none; }
-  .polaroid.reveal.in:nth-child(odd) { transform: rotate(-3deg); }
-  .polaroid.reveal.in:nth-child(even) { transform: rotate(3deg); }
 
   @media (max-width: 620px) {
-    .photos { gap: 14px; }
-    .polaroid { padding: 7px 7px 32px; }
-    .polaroid figcaption { font-size: .9rem; }
+    .photos .polaroid { padding: 6px 6px 28px; }
+    .photos .polaroid figcaption { font-size: .78rem; bottom: 6px; }
+    .photos .photo.main { padding: 8px 8px 36px; }
+    .photos .photo.main figcaption { font-size: 1.05rem; bottom: 8px; }
+    .lb-prev, .lb-next { top: auto; bottom: 20px; transform: none; }
+    .lb-prev { left: calc(50% - 60px); }
+    .lb-next { right: calc(50% - 60px); }
+    #lightbox .polaroid img { max-height: calc(100svh - 210px); }
     .unit { min-width: 64px; }
     .unit b { font-size: 1.7rem; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .cloud, #intro img, #music.playing { animation: none; }
+    .cloud, #intro img, #music.playing, .scroll-hint { animation: none; }
   }
 </style>
 </head>
@@ -241,17 +314,24 @@
 <!-- Pantalla de bienvenida: los navegadores solo permiten reproducir audio después de un toque -->
 <div id="intro">
   <img src="assets/logo.png" alt="Liam Dario 1">
-  <p>¡Tienes una invitación especial, vaquero! 🤠</p>
   <button class="btn-star" id="enter">⭐ Abrir invitación</button>
 </div>
 
 <button id="music" aria-label="Pausar o reproducir música" title="Música">🎵</button>
-<audio id="song" src="assets/rodeo-woody.mp3" loop preload="auto"></audio>
+<audio id="song" loop preload="none"></audio>
+
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Foto en tamaño completo">
+  <button class="lb-btn lb-close" aria-label="Cerrar">✕</button>
+  <button class="lb-btn lb-prev" aria-label="Foto anterior">‹</button>
+  <figure class="polaroid"><img alt=""><figcaption></figcaption></figure>
+  <button class="lb-btn lb-next" aria-label="Foto siguiente">›</button>
+</div>
 
 <main>
   <section class="hero">
     <img class="logo" src="assets/logo.png" alt="Liam Dario 1">
     <div class="tagline">¡Hay un nuevo <span class="y">sheriff</span><br>en el pueblo!</div>
+    <div class="scroll-hint">Desliza<span></span></div>
   </section>
 
   <section class="card reveal">
@@ -262,12 +342,15 @@
     <p id="fecha-texto" class="big"></p>
   </section>
 
-  <section class="photos">
-    <figure class="polaroid reveal"><img src="assets/woody-sonrisa.jpg" alt="Liam vestido de Woody"><figcaption>¡Yiiija!</figcaption></figure>
-    <figure class="polaroid reveal"><img src="assets/woody-sombrero.jpg" alt="Liam con sombrero de Woody"><figcaption>Sheriff Liam</figcaption></figure>
-    <figure class="polaroid reveal"><img src="assets/bautizo-sentado.jpg" alt="Liam con su ropa de bautizo"><figcaption>Mi bautizo</figcaption></figure>
-    <figure class="polaroid reveal"><img src="assets/woody-mirando.jpg" alt="Liam sosteniendo el sombrero de Woody"><figcaption>¡Al infinito!</figcaption></figure>
+  <!-- Fotos encimadas: la principal ("3", Liam con el sombrero en la mano) va hasta arriba -->
+  <section class="photos" id="photos">
+    <figure class="polaroid photo" tabindex="0" style="--x:0%;--y:0%;--r:-9deg;--z:2;--i:0"><img src="assets/woody-sonrisa.jpg" alt="Liam vestido de Woody"><figcaption>¡Yiiija!</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:60%;--y:3%;--r:8deg;--z:3;--i:1"><img src="assets/woody-sombrero.jpg" alt="Liam con sombrero de Woody"><figcaption>Sheriff Liam</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:1%;--y:50%;--r:7deg;--z:4;--i:2"><img src="assets/bautizo-sentado.jpg" alt="Liam con su ropa de bautizo"><figcaption>Mi bautizo</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:59%;--y:52%;--r:-8deg;--z:5;--i:3"><img src="assets/bautizo-parado.jpg" alt="Liam sonriendo con su ropa de bautizo"><figcaption>¡Hola, amigos!</figcaption></figure>
+    <figure class="polaroid photo main" tabindex="0" style="--x:21%;--y:13%;--r:-2deg;--z:10;--i:4"><img src="assets/woody-mirando.jpg" alt="Liam sosteniendo el sombrero de Woody"><figcaption>¡Al infinito!</figcaption></figure>
   </section>
+  <p class="tap-hint">👆 Toca una foto para verla completa</p>
 
   <section class="card reveal">
     <div class="cow"></div>
@@ -342,19 +425,53 @@
     sky.appendChild(el);
   });
 
-  // Música
+  // Música: a cada visita le toca una de las dos canciones al azar
+  const CANCIONES = ['assets/amigo-fiel.mp3', 'assets/rodeo-woody.mp3'];
   const song = $('song'), musicBtn = $('music');
+  song.src = CANCIONES[Math.floor(Math.random() * CANCIONES.length)];
   song.volume = 0.7;
   function setPlaying(on) { musicBtn.classList.toggle('playing', on); musicBtn.textContent = on ? '🎵' : '🔇'; }
   function play() { return song.play().then(() => setPlaying(true)).catch(() => setPlaying(false)); }
   musicBtn.addEventListener('click', () => song.paused ? play() : (song.pause(), setPlaying(false)));
 
-  // Intento de reproducción automática (algunos navegadores lo permiten)
-  play().then(() => { if (!song.paused) $('intro').classList.add('hide'); });
-
   $('enter').addEventListener('click', () => {
     play();
     $('intro').classList.add('hide');
+  });
+
+  // Visor de fotos: la principal primero, luego las demás
+  const fotos = [...document.querySelectorAll('.photo')].sort((a, b) => b.classList.contains('main') - a.classList.contains('main'));
+  const lb = $('lightbox'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('figcaption');
+  let actual = 0;
+  function mostrar(i) {
+    actual = (i + fotos.length) % fotos.length;
+    const img = fotos[actual].querySelector('img');
+    lbImg.src = img.src; lbImg.alt = img.alt;
+    lbCap.textContent = fotos[actual].querySelector('figcaption').textContent;
+  }
+  function abrir(i) { mostrar(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function cerrar() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  fotos.forEach((f, i) => {
+    f.addEventListener('click', () => abrir(i));
+    f.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(i); } });
+  });
+  lb.querySelector('.lb-close').addEventListener('click', cerrar);
+  lb.querySelector('.lb-prev').addEventListener('click', e => { e.stopPropagation(); mostrar(actual - 1); });
+  lb.querySelector('.lb-next').addEventListener('click', e => { e.stopPropagation(); mostrar(actual + 1); });
+  lb.addEventListener('click', e => { if (e.target === lb) cerrar(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') cerrar();
+    if (e.key === 'ArrowLeft') mostrar(actual - 1);
+    if (e.key === 'ArrowRight') mostrar(actual + 1);
+  });
+  // Deslizar con el dedo para cambiar de foto
+  let x0 = null;
+  lb.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 50) mostrar(actual + (dx < 0 ? 1 : -1));
   });
 
   // Cuenta regresiva
@@ -373,7 +490,7 @@
   const io = new IntersectionObserver(entries => entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }), { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelectorAll('.reveal, .photos').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
