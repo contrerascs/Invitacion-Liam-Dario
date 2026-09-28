@@ -193,13 +193,15 @@
     margin: var(--section-gap) auto 0;
   }
   .polaroid {
-    background: #fff; padding: 10px 10px 40px; border-radius: 6px;
+    background: #fff; padding: 10px 10px 0; border-radius: 6px;
     box-shadow: 0 10px 24px rgba(0,0,0,.28);
     position: relative;
   }
   .polaroid img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center 35%; border-radius: 3px; display: block; }
+  /* El texto va debajo de la foto: si es largo, el borde blanco crece para que quepa */
   .polaroid figcaption {
-    position: absolute; bottom: 8px; left: 0; right: 0; text-align: center;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 40px; padding: 6px 4px; text-align: center; line-height: 1.15;
     font-family: 'Luckiest Guy', cursive; color: var(--brown); font-size: 1.05rem; letter-spacing: .5px;
   }
   .photo {
@@ -233,15 +235,15 @@
   #lightbox.open { opacity: 1; visibility: visible; }
   #lightbox .polaroid {
     transform: scale(.85) rotate(-2deg); transition: transform .35s cubic-bezier(.2,1.4,.4,1);
-    padding: 12px 12px 54px;
-    max-width: 100%;
+    padding: 12px 12px 0;
+    max-width: 100%; width: min-content;
   }
   #lightbox.open .polaroid { transform: scale(1) rotate(-1deg); }
   #lightbox .polaroid img {
     width: auto; height: auto; aspect-ratio: auto; object-fit: contain;
     max-width: calc(100vw - 56px); max-height: calc(100svh - 150px);
   }
-  #lightbox figcaption { font-size: 1.5rem; bottom: 12px; }
+  #lightbox figcaption { font-size: 1.5rem; min-height: 56px; padding: 8px 6px; }
   .lb-btn {
     position: absolute; z-index: 2;
     width: 48px; height: 48px; border-radius: 50%;
@@ -255,14 +257,19 @@
   .lb-next { right: 12px; top: 50%; transform: translateY(-50%); }
 
   /* Cuenta regresiva */
-  .countdown { display: flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
-  .unit {
-    background: var(--yellow); border: 4px solid var(--blue); border-radius: 16px;
-    min-width: 76px; padding: 10px 6px 6px;
-    box-shadow: 0 5px 0 var(--blue);
+  /* Siempre 4 casillas en una sola fila; el tamaño se ajusta al ancho de la pantalla */
+  .countdown {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(5px, 2vw, 12px);
+    max-width: 380px; margin: 18px auto 0;
   }
-  .unit b { display: block; font-family: 'Luckiest Guy', cursive; font-size: 2.1rem; color: var(--red); line-height: 1; }
-  .unit small { font-weight: 800; color: var(--blue); text-transform: uppercase; font-size: .72rem; letter-spacing: 1px; }
+  .unit {
+    background: var(--yellow); border: clamp(3px, 1vw, 4px) solid var(--blue); border-radius: clamp(10px, 3.5vw, 16px);
+    min-width: 0; padding: clamp(7px, 2.4vw, 10px) 2px clamp(5px, 1.6vw, 6px);
+    box-shadow: 0 clamp(3px, 1.2vw, 5px) 0 var(--blue);
+  }
+  .unit b { display: block; font-family: 'Luckiest Guy', cursive; font-size: clamp(1.25rem, 7.5vw, 2.1rem); color: var(--red); line-height: 1; }
+  .unit small { display: block; font-weight: 800; color: var(--blue); text-transform: uppercase; font-size: clamp(.55rem, 2.6vw, .72rem); letter-spacing: .5px; white-space: nowrap; }
 
   /* Eventos */
   .icon { font-size: 2.6rem; line-height: 1; margin-bottom: 6px; }
@@ -274,8 +281,7 @@
     transition: transform .12s;
   }
   .btn:hover { transform: translateY(-2px); }
-  .btn.green { background: #25a244; }
-
+  
   .quote {
     font-family: 'Luckiest Guy', cursive; color: #fff; text-align: center;
     font-size: clamp(1.4rem, 5.5vw, 2rem); margin-top: var(--section-gap); line-height: 1.2;
@@ -302,16 +308,14 @@
     :root { --section-gap: 84px; }
     #intro img { width: min(306px, 70vw); }
     .hero .logo { width: min(414px, 79vw); }
-    .photos .polaroid { padding: 6px 6px 28px; }
-    .photos .polaroid figcaption { font-size: .78rem; bottom: 6px; }
-    .photos .photo.main { padding: 8px 8px 36px; }
-    .photos .photo.main figcaption { font-size: 1.05rem; bottom: 8px; }
+    .photos .polaroid { padding: 6px 6px 0; }
+    .photos .polaroid figcaption { font-size: .78rem; min-height: 28px; padding: 4px 3px 5px; }
+    .photos .photo.main { padding: 8px 8px 0; }
+    .photos .photo.main figcaption { font-size: 1.05rem; min-height: 36px; padding: 5px 4px 6px; }
     .lb-prev, .lb-next { width: 40px; height: 40px; font-size: 1.4rem; }
     .lb-prev { left: 4px; }
     .lb-next { right: 4px; }
     #lightbox .polaroid img { max-width: calc(100vw - 120px); max-height: calc(100svh - 170px); }
-    .unit { min-width: 64px; }
-    .unit b { font-size: 1.7rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     .cloud, #intro img, #music.playing, .scroll-hint { animation: none; }
@@ -355,11 +359,11 @@
 
   <!-- Fotos encimadas: la principal ("3", Liam con el sombrero en la mano) va hasta arriba -->
   <section class="photos" id="photos">
-    <figure class="polaroid photo" tabindex="0" style="--x:-4%;--y:0%;--r:9deg;--z:2;--i:0"><img src="assets/woody-sonrisa.jpg" alt="Liam vestido de Woody"><figcaption>¡Yiiija!</figcaption></figure>
-    <figure class="polaroid photo" tabindex="0" style="--x:64%;--y:2%;--r:-9deg;--z:3;--i:1"><img src="assets/woody-sombrero.jpg" alt="Liam con sombrero de Woody"><figcaption>Sheriff Liam</figcaption></figure>
-    <figure class="polaroid photo" tabindex="0" style="--x:-3%;--y:54%;--r:-8deg;--z:4;--i:2"><img src="assets/bautizo-sentado.jpg" alt="Liam con su ropa de bautizo"><figcaption>Mi bautizo</figcaption></figure>
-    <figure class="polaroid photo" tabindex="0" style="--x:63%;--y:55%;--r:8deg;--z:5;--i:3"><img src="assets/bautizo-parado.jpg" alt="Liam sonriendo con su ropa de bautizo"><figcaption>¡Hola, amigos!</figcaption></figure>
-    <figure class="polaroid photo main" tabindex="0" style="--x:24%;--y:17%;--r:-2deg;--z:10;--i:4"><img src="assets/woody-mirando.jpg" alt="Liam sosteniendo el sombrero de Woody"><figcaption>¡Al infinito!</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:-4%;--y:0%;--r:9deg;--z:2;--i:0"><img src="assets/bautizo-sentado.jpg" alt="Liam con su ropa de bautizo"><figcaption>Mi bautizo</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:64%;--y:2%;--r:-9deg;--z:3;--i:1"><img src="assets/bautizo-parado.jpg" alt="Liam sonriendo con su ropa de bautizo"><figcaption>¡Hola, amigos!</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:-3%;--y:54%;--r:-8deg;--z:4;--i:2"><img src="assets/woody-sonrisa.jpg" alt="Liam vestido de Woody"><figcaption>¡Hay una serpiente en mi bota!</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:63%;--y:55%;--r:8deg;--z:5;--i:3"><img src="assets/woody-sombrero.jpg" alt="Liam con sombrero de Woody"><figcaption>Sheriff Liam</figcaption></figure>
+    <figure class="polaroid photo main" tabindex="0" style="--x:24%;--y:17%;--r:-2deg;--z:10;--i:4"><img src="assets/woody-mirando.jpg" alt="Liam sosteniendo el sombrero de Woody"><figcaption>¡Yo soy tu amigo fiel!</figcaption></figure>
   </section>
   <p class="tap-hint">👆 Toca una foto para verla completa</p>
 
@@ -384,13 +388,6 @@
     <a class="btn" id="fiesta-mapa" target="_blank" rel="noopener">📍 Ver ubicación</a>
   </section>
 
-  <section class="card reveal">
-    <div class="cow"></div>
-    <h2>Confirma tu asistencia</h2>
-    <p>Nos encantará que nos acompañes en este día tan especial. Por favor confírmanos antes del <b id="confirmar-antes"></b>.</p>
-    <a class="btn green" id="whatsapp" target="_blank" rel="noopener">💬 Confirmar por WhatsApp</a>
-  </section>
-
   <p class="quote reveal">"Yo soy tu amigo fiel" 🤠⭐</p>
   <footer>Con cariño, la familia de Liam Dario</footer>
 </main>
@@ -405,8 +402,6 @@
     fiestaHora: '3:00 p.m.',
     fiestaLugar: 'Salón del Dany',
     fiestaMapa: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Salón del Dany'), // Cambia por el link real de Google Maps
-    confirmarAntes: '5 de octubre',
-    whatsapp: '520000000000',                    // Número con lada de país, sin "+" ni espacios
   };
   /* ================================================================ */
 
@@ -416,9 +411,6 @@
   $('fiesta-hora').textContent = EVENTO.fiestaHora;
   $('fiesta-lugar').innerHTML = EVENTO.fiestaLugar;
   $('fiesta-mapa').href = EVENTO.fiestaMapa;
-  $('confirmar-antes').textContent = EVENTO.confirmarAntes;
-  $('whatsapp').href = 'https://wa.me/' + EVENTO.whatsapp + '?text=' +
-    encodeURIComponent('¡Hola! Confirmo mi asistencia al bautizo y primer cumpleaños de Liam Dario 🤠🎉');
 
   // Nubes
   const sky = $('sky');
