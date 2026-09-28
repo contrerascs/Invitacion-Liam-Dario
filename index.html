@@ -3,11 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Liam Dario · 1 año</title>
-<meta name="description" content="Invitación al primer cumpleaños y bautizo de Liam Dario">
-<meta property="og:title" content="¡Liam Dario cumple 1 año!">
-<meta property="og:description" content="Te invitamos a su primer cumpleaños y bautizo 🤠">
-<meta property="og:image" content="assets/logo.png">
+<title>Bautizo Liam Dario</title>
+<meta name="description" content="Te invitamos a celebrar el bautizo y primer cumpleaños de nuestro pequeño comisario 🤠⭐">
+<!-- Vista previa al compartir el link (WhatsApp, Facebook, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bautizo Liam Dario">
+<meta property="og:description" content="Te invitamos a celebrar el bautizo y primer cumpleaños de nuestro pequeño comisario 🤠⭐">
+<!-- ⚠️ Cuando la página esté publicada, cambia "assets/og-image.jpg" por la dirección completa,
+     por ejemplo: https://tu-sitio.netlify.app/assets/og-image.jpg  (WhatsApp necesita la dirección completa para mostrar la imagen) -->
+<meta property="og:image" content="assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
@@ -181,7 +188,7 @@
   .photos {
     position: relative;
     width: 100%; max-width: 560px;
-    aspect-ratio: 1 / 1.25;
+    aspect-ratio: 1 / 1.4;
     margin: 50px auto 0;
   }
   .polaroid {
@@ -203,7 +210,7 @@
     transition-delay: calc(var(--i) * .12s);
     -webkit-tap-highlight-color: transparent;
   }
-  .photo.main { width: 58%; }
+  .photo.main { width: 52%; }
   .photos:not(.in) .photo { opacity: 0; transform: translateY(60px) scale(.7) rotate(0deg); }
   .photos.in .photo:hover { transform: rotate(var(--r)) scale(1.04); transition-delay: 0s; }
   .photo:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
@@ -295,10 +302,10 @@
     .photos .polaroid figcaption { font-size: .78rem; bottom: 6px; }
     .photos .photo.main { padding: 8px 8px 36px; }
     .photos .photo.main figcaption { font-size: 1.05rem; bottom: 8px; }
-    .lb-prev, .lb-next { top: auto; bottom: 20px; transform: none; }
-    .lb-prev { left: calc(50% - 60px); }
-    .lb-next { right: calc(50% - 60px); }
-    #lightbox .polaroid img { max-height: calc(100svh - 210px); }
+    .lb-prev, .lb-next { width: 40px; height: 40px; font-size: 1.4rem; }
+    .lb-prev { left: 4px; }
+    .lb-next { right: 4px; }
+    #lightbox .polaroid img { max-width: calc(100vw - 120px); max-height: calc(100svh - 170px); }
     .unit { min-width: 64px; }
     .unit b { font-size: 1.7rem; }
   }
@@ -344,11 +351,11 @@
 
   <!-- Fotos encimadas: la principal ("3", Liam con el sombrero en la mano) va hasta arriba -->
   <section class="photos" id="photos">
-    <figure class="polaroid photo" tabindex="0" style="--x:0%;--y:0%;--r:-9deg;--z:2;--i:0"><img src="assets/woody-sonrisa.jpg" alt="Liam vestido de Woody"><figcaption>¡Yiiija!</figcaption></figure>
-    <figure class="polaroid photo" tabindex="0" style="--x:60%;--y:3%;--r:8deg;--z:3;--i:1"><img src="assets/woody-sombrero.jpg" alt="Liam con sombrero de Woody"><figcaption>Sheriff Liam</figcaption></figure>
-    <figure class="polaroid photo" tabindex="0" style="--x:1%;--y:50%;--r:7deg;--z:4;--i:2"><img src="assets/bautizo-sentado.jpg" alt="Liam con su ropa de bautizo"><figcaption>Mi bautizo</figcaption></figure>
-    <figure class="polaroid photo" tabindex="0" style="--x:59%;--y:52%;--r:-8deg;--z:5;--i:3"><img src="assets/bautizo-parado.jpg" alt="Liam sonriendo con su ropa de bautizo"><figcaption>¡Hola, amigos!</figcaption></figure>
-    <figure class="polaroid photo main" tabindex="0" style="--x:21%;--y:13%;--r:-2deg;--z:10;--i:4"><img src="assets/woody-mirando.jpg" alt="Liam sosteniendo el sombrero de Woody"><figcaption>¡Al infinito!</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:-4%;--y:0%;--r:9deg;--z:2;--i:0"><img src="assets/woody-sonrisa.jpg" alt="Liam vestido de Woody"><figcaption>¡Yiiija!</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:64%;--y:2%;--r:-9deg;--z:3;--i:1"><img src="assets/woody-sombrero.jpg" alt="Liam con sombrero de Woody"><figcaption>Sheriff Liam</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:-3%;--y:54%;--r:-8deg;--z:4;--i:2"><img src="assets/bautizo-sentado.jpg" alt="Liam con su ropa de bautizo"><figcaption>Mi bautizo</figcaption></figure>
+    <figure class="polaroid photo" tabindex="0" style="--x:63%;--y:55%;--r:8deg;--z:5;--i:3"><img src="assets/bautizo-parado.jpg" alt="Liam sonriendo con su ropa de bautizo"><figcaption>¡Hola, amigos!</figcaption></figure>
+    <figure class="polaroid photo main" tabindex="0" style="--x:24%;--y:17%;--r:-2deg;--z:10;--i:4"><img src="assets/woody-mirando.jpg" alt="Liam sosteniendo el sombrero de Woody"><figcaption>¡Al infinito!</figcaption></figure>
   </section>
   <p class="tap-hint">👆 Toca una foto para verla completa</p>
 
