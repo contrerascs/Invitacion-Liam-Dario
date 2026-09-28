@@ -30,6 +30,7 @@
     --brown: #8a4b22;
     --cream: #fff8e6;
     --ink: #1c2340;
+    --section-gap: 72px;   /* separación entre secciones */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -141,7 +142,7 @@
     border: 5px solid var(--blue);
     border-radius: 26px;
     padding: 28px 22px;
-    margin-top: 34px;
+    margin-top: var(--section-gap);
     box-shadow: 0 10px 0 rgba(26,63,166,.9), 0 20px 40px rgba(0,0,0,.18);
     position: relative;
     text-align: center;
@@ -189,7 +190,7 @@
     position: relative;
     width: 100%; max-width: 560px;
     aspect-ratio: 1 / 1.4;
-    margin: 50px auto 0;
+    margin: var(--section-gap) auto 0;
   }
   .polaroid {
     background: #fff; padding: 10px 10px 40px; border-radius: 6px;
@@ -277,7 +278,7 @@
 
   .quote {
     font-family: 'Luckiest Guy', cursive; color: #fff; text-align: center;
-    font-size: clamp(1.4rem, 5.5vw, 2rem); margin-top: 44px; line-height: 1.2;
+    font-size: clamp(1.4rem, 5.5vw, 2rem); margin-top: var(--section-gap); line-height: 1.2;
     text-shadow: 3px 3px 0 var(--blue);
   }
 
@@ -298,6 +299,9 @@
   .reveal.in { opacity: 1; transform: none; }
 
   @media (max-width: 620px) {
+    :root { --section-gap: 84px; }
+    #intro img { width: min(306px, 70vw); }
+    .hero .logo { width: min(414px, 79vw); }
     .photos .polaroid { padding: 6px 6px 28px; }
     .photos .polaroid figcaption { font-size: .78rem; bottom: 6px; }
     .photos .photo.main { padding: 8px 8px 36px; }
@@ -424,10 +428,11 @@
     { top: 64, w: 280, t: 80, d: -75 }, { top: 78, w: 180, t: 60, d: -5 },
     { top: 88, w: 240, t: 75, d: -50 }, { top: 12, w: 140, t: 50, d: -30 },
   ];
+  const escalaNubes = matchMedia('(max-width: 620px)').matches ? 0.9 : 1;  // nubes 10% más pequeñas en celular
   clouds.forEach(c => {
     const el = document.createElement('div');
     el.className = 'cloud';
-    el.style.cssText = `top:${c.top}vh;--w:${c.w}px;--t:${c.t}s;--d:${c.d}s`;
+    el.style.cssText = `top:${c.top}vh;--w:${Math.round(c.w * escalaNubes)}px;--t:${c.t}s;--d:${c.d}s`;
     el.appendChild(document.createElement('span'));
     sky.appendChild(el);
   });
