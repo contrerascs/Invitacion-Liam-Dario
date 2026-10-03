@@ -9,15 +9,25 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bautizo Liam Dario">
 <meta property="og:description" content="Te invitamos a celebrar el bautizo y primer cumpleaños de nuestro pequeño comisario 🤠⭐">
-<!-- ⚠️ Cuando la página esté publicada, cambia "assets/og-image.jpg" por la dirección completa,
-     por ejemplo: https://tu-sitio.netlify.app/assets/og-image.jpg  (WhatsApp necesita la dirección completa para mostrar la imagen) -->
-<meta property="og:image" content="assets/og-image.jpg">
+<!-- WhatsApp necesita la dirección completa de la imagen -->
+<meta property="og:url" content="https://contrerascs.github.io/Invitacion-Liam-Dario/">
+<meta property="og:image" content="https://contrerascs.github.io/Invitacion-Liam-Dario/assets/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<!-- Las fuentes cargan sin bloquear la página: si el internet es lento, la invitación se muestra de inmediato y las letras se cambian al llegar -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@600;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@600;800;900&display=swap"></noscript>
+<script>
+  // Marca que el código funciona (para las animaciones). Si en 4 s el código principal no terminó
+  // (internet muy lento o navegador viejo), se quita la marca y todo el contenido se muestra sin animación.
+  document.documentElement.className += ' js';
+  setTimeout(function () {
+    if (!window.invitacionLista) document.documentElement.className = document.documentElement.className.replace(' js', '');
+  }, 4000);
+</script>
 <style>
   :root {
     --sky-top: #1f74d4;
@@ -44,7 +54,7 @@
   }
 
   /* ---------- Nubes estilo Toy Story ---------- */
-  .sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .sky { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 0; pointer-events: none; overflow: hidden; }
   .cloud {
     position: absolute;
     width: var(--w);
@@ -73,7 +83,7 @@
 
   /* ---------- Pantalla de bienvenida ---------- */
   #intro {
-    position: fixed; inset: 0; z-index: 50;
+    position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 22px; padding: 24px; text-align: center;
     background: radial-gradient(circle at 50% 40%, rgba(255,255,255,.25), transparent 60%),
@@ -105,6 +115,7 @@
 
   .hero {
     text-align: center;
+    min-height: calc(100vh - 32px);
     min-height: calc(100svh - 32px);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 20px 0 70px;
@@ -214,7 +225,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   .photo.main { width: 52%; }
-  .photos:not(.in) .photo { opacity: 0; transform: translateY(60px) scale(.7) rotate(0deg); }
+  .js .photos:not(.in) .photo { opacity: 0; transform: translateY(60px) scale(.7) rotate(0deg); }
   .photos.in .photo:hover { transform: rotate(var(--r)) scale(1.04); transition-delay: 0s; }
   .photo:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
   .tap-hint {
@@ -226,7 +237,7 @@
 
   /* Visor de foto en tamaño completo */
   #lightbox {
-    position: fixed; inset: 0; z-index: 60;
+    position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 60;
     background: rgba(10, 25, 60, .88);
     display: flex; align-items: center; justify-content: center;
     padding: 16px;
@@ -301,8 +312,12 @@
   #music.playing { animation: spin 3s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+  .js .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: none; }
+
+  @supports not (aspect-ratio: 1 / 1) {
+    .photos { height: min(784px, calc((100vw - 32px) * 1.4)); }
+  }
 
   @media (max-width: 620px) {
     :root { --section-gap: 84px; }
@@ -329,7 +344,7 @@
 <!-- Pantalla de bienvenida: los navegadores solo permiten reproducir audio después de un toque -->
 <div id="intro">
   <img src="assets/logo.png" alt="Liam Dario 1">
-  <button class="btn-star" id="enter">⭐ Abrir invitación</button>
+  <button class="btn-star" id="enter" onclick="document.getElementById('intro').className += ' hide';">⭐ Abrir invitación</button>
 </div>
 
 <button id="music" aria-label="Pausar o reproducir música" title="Música">🎵</button>
@@ -493,10 +508,16 @@
   tick(); setInterval(tick, 1000);
 
   // Animación al hacer scroll
-  const io = new IntersectionObserver(entries => entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-  }), { threshold: 0.15 });
-  document.querySelectorAll('.reveal, .photos').forEach(el => io.observe(el));
+  const animados = document.querySelectorAll('.reveal, .photos');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: 0.15 });
+    animados.forEach(el => io.observe(el));
+  } else {
+    animados.forEach(el => el.classList.add('in'));   // navegadores viejos: mostrar todo de una vez
+  }
+  window.invitacionLista = true;
 </script>
 </body>
 </html>
